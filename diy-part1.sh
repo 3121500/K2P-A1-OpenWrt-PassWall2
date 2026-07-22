@@ -1,10 +1,13 @@
 #!/bin/bash
 
-echo "Add PassWall2 feeds"
+sed -i 's/option lang .*/option lang zh_cn/' package/base-files/files/etc/config/luci
 
-cd openwrt
+sed -i 's/option timezone .*/option timezone CST-8/' package/base-files/files/etc/config/system
 
-sed -i '/passwall/d' feeds.conf.default
+mkdir -p files/etc/config
 
-echo "src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git" >> feeds.conf.default
-echo "src-git passwall2 https://github.com/Openwrt-Passwall/openwrt-passwall2.git" >> feeds.conf.default
+cat > files/etc/config/firewall <<EOF
+config defaults
+        option flow_offloading '1'
+        option flow_offloading_hw '1'
+EOF
