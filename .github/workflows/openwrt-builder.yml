@@ -65,7 +65,16 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+      run: |
+        cd openwrt
+
+        rm -rf feeds/passwall2
+        rm -rf feeds/passwall_packages
+        rm -f feeds/passwall2.index
+        rm -f feeds/passwall_packages.index
+
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
