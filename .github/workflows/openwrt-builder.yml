@@ -135,14 +135,17 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
-      uses: softprops/action-gh-release@master
+  uses: softprops/action-gh-release@v2
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
-        files: ${{ env.FIRMWARE }}/*
+        files: |
+      openwrt/bin/targets/ramips/mt7621/**/*.bin
+      openwrt/bin/targets/ramips/mt7621/**/*.img
+      openwrt/bin/targets/ramips/mt7621/**/*.gz
 
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
