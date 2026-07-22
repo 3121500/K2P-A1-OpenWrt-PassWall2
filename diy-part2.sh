@@ -1,20 +1,16 @@
 #!/bin/bash
-#
-# https://github.com/P3TERX/Actions-OpenWrt
-# File name: diy-part2.sh
-# Description: OpenWrt DIY script part 2 (After Update feeds)
-#
-# Copyright (c) 2019-2024 P3TERX <https://p3terx.com>
-#
-# This is free software, licensed under the MIT License.
-# See /LICENSE for more information.
-#
 
-# Modify default IP
-#sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
+# 默认语言
+sed -i 's/option lang .*/option lang zh_cn/' package/base-files/files/etc/config/luci
 
-# Modify default theme
-#sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
+# 默认时区
+sed -i 's/option timezone .*/option timezone CST-8/' package/base-files/files/etc/config/system
 
-# Modify hostname
-#sed -i 's/OpenWrt/P3TERX-Router/g' package/base-files/files/bin/config_generate
+# 开启软件流量分载
+mkdir -p files/etc/config
+
+cat > files/etc/config/firewall <<EOF
+config defaults
+        option flow_offloading '1'
+        option flow_offloading_hw '1'
+EOF
